@@ -1,5 +1,7 @@
 package entity;
 
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 import java.util.*;
 
 public class Person {
@@ -25,13 +27,16 @@ public class Person {
     public Optional<SimpleAddress> getSimpleAddress() {
         //TODO: return Optional<SimpleAddress>
 
-        try {
-            Optional<SimpleAddress> optionalSimpleAddress = Optional.ofNullable(new SimpleAddress(address.getStreet(), address.getCity()));
-            return optionalSimpleAddress;
-        } catch (NullPointerException e) {
+        Optional<Address> address = Optional.ofNullable(this.address);
+        return address.map(value->new SimpleAddress(value.getStreet(), value.getCity()));
 
-        }
-        return Optional.empty();
+//        try {
+//            Optional<SimpleAddress> optionalSimpleAddress = Optional.ofNullable(new SimpleAddress(address.getStreet(), address.getCity()));
+//            return optionalSimpleAddress;
+//        } catch (NullPointerException e) {
+//
+//        }
+//        return Optional.empty();
     }
 
     public Address getAddress() {

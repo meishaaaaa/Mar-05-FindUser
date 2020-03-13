@@ -10,6 +10,10 @@ public class MasterNumber {
     this.number = number;
   }
 
+  public String getNumber() {
+    return number;
+  }
+
   @Override
   public String toString() {
     return number;
@@ -27,4 +31,5 @@ public class MasterNumber {
   public int hashCode() {
     return Objects.hash(number);
   }
+
 }

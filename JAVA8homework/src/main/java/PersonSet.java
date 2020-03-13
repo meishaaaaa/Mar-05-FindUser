@@ -34,40 +34,36 @@ public class PersonSet {
         // Can use Collectors.groupingBy method
         // Can add helper method
 
-        try {
-            Map<String, List<Address>> addressMap = addresses.stream().collect(Collectors.groupingBy(Address::getMasterNumber));
+            Map<String, Address> addressMap = addresses.stream().collect(Collectors.toMap(Address::getMasterNumber,a -> a, (a1, a2) ->a1));
             Map<String, List<Email>> emailMap = emails.stream().collect(Collectors.groupingBy(Email::getMasterNumber));
             Map<String, List<Telephone>> telMap = telephones.stream().collect(Collectors.groupingBy(Telephone::getMasterNumber));
 
+            return masterNumbers.stream().map(MasterNumber::getNumber).map(mn-> new Person(
+                    mn,
+                    telMap.getOrDefault(mn,new LinkedList<>()),
+                    addressMap.getOrDefault(mn, null),
+                    emailMap.getOrDefault(mn, new LinkedList<>())));
 
-            ArrayList<Person> person = getPeople(addressMap, emailMap, telMap);
-
-            return person.stream().distinct();
-        }
-        catch (NullPointerException e){
-
-        }
-        return Stream.empty();
     }
 
-    private ArrayList<Person> getPeople(Map<String, List<Address>> addressMap, Map<String, List<Email>> emailMap, Map<String, List<Telephone>> telMap) {
-        ArrayList<Person> person = new ArrayList<>();
-        try {
-            for (MasterNumber i : masterNumbers) {
-                List<Address> address = addressMap.get(i.toString());
-                List<Email> email = emailMap.get(i.toString());
-                List<Telephone> tel = telMap.get(i.toString());
-                for (Address a : address) {
-                    Person p = new Person(i.toString(), tel, a, email);
-                    person.add(p);
-                }
-            }
-            return person;
-        } catch (NullPointerException e) {
-
-        }
-        return null;
-    }
+//    private ArrayList<Person> getPeople(Map<String, List<Address>> addressMap, Map<String, List<Email>> emailMap, Map<String, List<Telephone>> telMap) {
+//        ArrayList<Person> person = new ArrayList<>();
+//        try {
+//            for (MasterNumber i : masterNumbers) {
+//                List<Address> address = addressMap.get(i.toString());
+//                List<Email> email = emailMap.get(i.toString());
+//                List<Telephone> tel = telMap.get(i.toString());
+//                for (Address a : address) {
+//                    Person p = new Person(i.toString(), tel, a, email);
+//                    person.add(p);
+//                }
+//            }
+//            return person;
+//        } catch (NullPointerException e) {
+//
+//        }
+//        return null;
+//    }
 
 
     public List<Address> getAddresses() {

@@ -20,13 +20,15 @@ public class PersonService {
         // Use groupToPeople() method
 
         List<String> list = numbers.stream().map(m -> m.toString()).collect(Collectors.toList());
-        try {
-            people.get(list).isPresent();
-            return people.get(list).get().groupToPeople();
-        } catch (NullPointerException e) {
+        return people.getOrDefault(list, Optional.empty()).map(PersonSet::groupToPeople).orElse(Stream.empty());
 
-        }
-        return Stream.empty();
+//        try {
+//            people.get(list).isPresent();
+//            return people.get(list).get().groupToPeople();
+//        } catch (NullPointerException e) {
+//
+//        }
+//        return Stream.empty();
     }
 
 
